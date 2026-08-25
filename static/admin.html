@@ -270,26 +270,188 @@
         }
 
 
+                /* ========== 炫彩黑主题 ========== */
         :root[data-theme="dark"] {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-sidebar: #161b22;
-            --text-primary: #e6edf3;
-            --text-secondary: #b1bac4;
-            --text-muted: #6e7681;
-            --border-color: #30363d;
-            --accent-primary: #7c8aff;
-            --accent-secondary: #a855f7;
-            --accent-gradient: linear-gradient(135deg, #7c8aff 0%, #a855f7 100%);
-            --accent-glow: 0 4px 20px rgba(124, 138, 255, 0.4);
-            --hover-bg: rgba(124, 138, 255, 0.1);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
-            --code-bg: #1a1f26;
-            --tag-bg: rgba(124, 138, 255, 0.15);
-            --tag-text: #7c8aff;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-sidebar: #0d0d15;
+            --text-primary: #e8e8ff;
+            --text-secondary: #b0b0cc;
+            --text-muted: #5a5a7a;
+            --border-color: #1e1e3a;
+            --accent-primary: #00f5ff;
+            --accent-secondary: #ff00aa;
+            --accent-gradient: linear-gradient(135deg, #00f5ff 0%, #7b2dff 25%, #ff00aa 50%, #ffaa00 75%, #00ff88 100%);
+            --accent-glow: 0 0 25px rgba(0, 245, 255, 0.6), 0 0 50px rgba(123, 45, 255, 0.3);
+            --accent-glow-strong: 0 0 40px rgba(0, 245, 255, 0.8), 0 0 80px rgba(255, 0, 170, 0.4);
+            --hover-bg: rgba(0, 245, 255, 0.08);
+            --shadow-sm: 0 2px 15px rgba(0, 0, 0, 0.6);
+            --shadow-md: 0 4px 25px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 245, 255, 0.1);
+            --shadow-lg: 0 10px 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(123, 45, 255, 0.2);
+            --code-bg: #0a0a18;
+            --tag-bg: linear-gradient(135deg, rgba(0, 245, 255, 0.15), rgba(255, 0, 170, 0.15));
+            --tag-text: #00f5ff;
+            --rainbow-border: linear-gradient(90deg, #ff0000, #ff7700, #ffff00, #00ff00, #0000ff, #8b00ff);
         }
+
+        [data-theme="dark"] body {
+            background: var(--bg-primary);
+            background-image: 
+                radial-gradient(ellipse at 10% 20%, rgba(0, 245, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(ellipse at 90% 80%, rgba(255, 0, 170, 0.08) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 50%, rgba(123, 45, 255, 0.05) 0%, transparent 60%);
+            position: relative;
+        }
+
+        [data-theme="dark"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, transparent 0%, rgba(0, 245, 255, 0.02) 50%, transparent 100%),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 245, 255, 0.015) 2px,
+                    rgba(0, 245, 255, 0.015) 4px
+                );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="dark"] .header {
+            background: linear-gradient(180deg, rgba(10, 10, 15, 0.95) 0%, rgba(18, 18, 26, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+            border-image: var(--rainbow-border) 1;
+            box-shadow: 0 4px 30px rgba(0, 245, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        [data-theme="dark"] .navbar-brand {
+            font-weight: 700;
+            background: linear-gradient(90deg, #00f5ff, #7b2dff, #ff00aa, #ffaa00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 15px rgba(0, 245, 255, 0.6));
+        }
+
+        [data-theme="dark"] .nav-btn {
+            background: rgba(0, 245, 255, 0.05);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            color: #00f5ff;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .nav-btn:hover {
+            background: rgba(0, 245, 255, 0.15);
+            border-color: #00f5ff;
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+        }
+
+        [data-theme="dark"] .nav-btn.primary {
+            background: linear-gradient(135deg, #00f5ff, #7b2dff);
+            color: #fff;
+            border: none;
+        }
+
+        [data-theme="dark"] .sidebar {
+            background: linear-gradient(180deg, rgba(13, 13, 21, 0.95) 0%, rgba(18, 18, 26, 0.95) 100%);
+            border-right: 1px solid transparent;
+            border-image: var(--rainbow-border) 1;
+        }
+
+        [data-theme="dark"] .stat-item {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.08) 0%, rgba(123, 45, 255, 0.08) 100%);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+        }
+
+        [data-theme="dark"] .stat-number {
+            background: linear-gradient(90deg, #00f5ff, #7b2dff, #ff00aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        [data-theme="dark"] .form-input,
+        [data-theme="dark"] .editor-input,
+        [data-theme="dark"] .editor-textarea {
+            background: rgba(10, 10, 18, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .form-input:focus,
+        [data-theme="dark"] .editor-input:focus,
+        [data-theme="dark"] .editor-textarea:focus {
+            border-color: #00f5ff;
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+            outline: none;
+        }
+
+        [data-theme="dark"] .btn {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(123, 45, 255, 0.2));
+            border: 1px solid rgba(0, 245, 255, 0.4);
+            color: #00f5ff;
+        }
+
+        [data-theme="dark"] .btn-primary {
+            background: linear-gradient(135deg, #00f5ff, #7b2dff);
+            border: none;
+            color: #fff;
+        }
+
+        [data-theme="dark"] .btn-danger {
+            background: linear-gradient(135deg, #ff0055, #ff00aa);
+            border: none;
+            color: #fff;
+        }
+
+        [data-theme="dark"] .article-item {
+            border: 1px solid var(--border-color);
+            background: rgba(0, 245, 255, 0.03);
+        }
+
+        [data-theme="dark"] .article-item:hover {
+            border-color: rgba(0, 245, 255, 0.4);
+            background: rgba(0, 245, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.2);
+        }
+
+        [data-theme="dark"] .article-item.active {
+            background: linear-gradient(90deg, rgba(0, 245, 255, 0.15) 0%, rgba(123, 45, 255, 0.15) 100%);
+            border-color: #00f5ff;
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+        }
+
+        [data-theme="dark"] .login-card {
+            background: linear-gradient(135deg, rgba(18, 18, 26, 0.9), rgba(13, 13, 21, 0.9));
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.2);
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background: rgba(0, 245, 255, 0.15);
+            border: 1px solid rgba(0, 245, 255, 0.5);
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00f5ff, #7b2dff, #ff00aa);
+        }
+
+        [data-theme="dark"] ::selection {
+            background: rgba(0, 245, 255, 0.3);
+            color: #fff;
+        }
+
 
         /* ========== 赛博朋克主题 ========== */
         :root[data-theme="cyberpunk"] {
