@@ -7,8 +7,15 @@ from core.database import get_articles, get_article, search_articles, get_catego
 from core.backup import get_backups
 import json
 import os
+from fastapi import Depends
 
 router = APIRouter(tags=["public"])
+
+
+def get_db():
+    """获取数据库连接"""
+    from core.config import get_db as _get_db
+    return _get_db()
 
 
 @router.get("/health")
@@ -34,8 +41,8 @@ def serve_frontend():
 @router.get("/admin")
 def serve_admin():
     """提供管理后台页面"""
-    ui_path = "static/admin.html"
-    if __import__("os").path.exists(ui_path):
+    ui_path = "/app/static/admin.html"
+    if os.path.exists(ui_path):
         with open(ui_path, "r") as f:
             return HTMLResponse(content=f.read())
     return HTMLResponse(content="<h1>Erudit 管理后台</h1><p>管理页面未找到</p>")
@@ -71,7 +78,7 @@ def list_categories():
 
 @router.get("/tags")
 def list_tags():
-    """获取标签列表"""
+    """获取所有标签"""
     from core.database import get_tags
     return get_tags()
 
@@ -93,6 +100,34 @@ def search(keyword: str = Query(...)):
 def list_backups():
     """获取备份列表"""
     return get_backups()
+
+
+# 友情链接设置 API
+@router.get("/api/settings")
+def get_settings():
+    """获取设置（包含友情链接）"""
+    from core.config import get_db
+    try:
+        with get_db() as conn:
+            row = conn.execute("SELECT value FROM settings WHERE key = ?", ('links',)).fetchone()
+            if row:
+                links = json.loads(row[0])
+            else:
+                links = []
+    except:
+        links = []
+    return {"settings": {"links": links}}
+
+
+@router.put("/api/settings")
+def update_settings(data: dict):
+    """更新设置（友情链接）"""
+    from core.config import get_db
+    links = data.get('links', [])
+    with get_db() as conn:
+        conn.execute('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)', 
+                    ('links', json.dumps(links)))
+    return {"message": "更新成功"}
 
 
 @router.get("/rss")
@@ -141,8 +176,100 @@ def get_metrics():
         "backups": len(backups),
         "backup_size_bytes": total_backup_size,
         "backup_size_readable": format_size(total_backup_size),
-        "version": "2.0.0"
+        "version": "3.0.0"
     }
+
+
+# ========== 新增路由 ==========
+
+@router.get("/login")
+def serve_login():
+    """登录页面"""
+    ui_path = "/app/static/login.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>登录</h1>")
+
+
+@router.get("/links")
+def serve_links():
+    """友情链接页面"""
+    ui_path = "/app/static/links.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>友情链接</h1>")
+
+
+@router.get("/article/{slug}")
+def serve_article(slug: str):
+    """文章详情页"""
+    ui_path = "/app/static/article.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>文章详情</h1>")
+
+
+@router.get("/admin/create")
+def serve_admin_create():
+    """新建文章页面"""
+    ui_path = "/app/static/admin_create.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>新建文章</h1>")
+
+
+@router.get("/admin/articles")
+def serve_admin_articles():
+    """文章管理页面"""
+    ui_path = "/app/static/admin_articles.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>文章管理</h1>")
+
+
+@router.get("/admin/categories")
+def serve_admin_categories():
+    """分类管理页面"""
+    ui_path = "/app/static/admin_categories.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>分类管理</h1>")
+
+
+@router.get("/admin/tags")
+def serve_admin_tags():
+    """标签管理页面"""
+    ui_path = "/app/static/admin_tags.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>标签管理</h1>")
+
+
+@router.get("/admin/settings")
+def serve_admin_settings():
+    """站点管理页面"""
+    ui_path = "/app/static/admin_settings.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>站点管理</h1>")
+
+
+@router.get("/admin/links")
+def serve_admin_links():
+    """友情链接管理页面"""
+    ui_path = "/app/static/admin_links.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>友情链接管理</h1>")
 
 
 def format_size(bytes_size: int) -> str:
@@ -152,3 +279,13 @@ def format_size(bytes_size: int) -> str:
             return f"{bytes_size:.1f} {unit}"
         bytes_size /= 1024
     return f"{bytes_size:.1f} TB"
+
+@router.get("/category/{category_id}")
+def serve_category_page(category_id: int):
+    """分类文章列表页面"""
+    import os
+    ui_path = "/app/static/index.html"
+    if os.path.exists(ui_path):
+        with open(ui_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>分类文章</h1>")

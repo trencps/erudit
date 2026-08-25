@@ -5,755 +5,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erudit - 管理后台</title>
     <style>
-        /* ========== 浅色主题 ========== */
-        :root[data-theme="light"] {
-            --bg-primary: #f0f2f5;
-            --bg-secondary: #ffffff;
-            --bg-sidebar: #ffffff;
-            --text-primary: #1a1a2e;
-            --text-secondary: #4a4a6a;
-            --text-muted: #8888aa;
-            --border-color: #e0e0e8;
-            --accent-primary: #667eea;
-            --accent-secondary: #764ba2;
-            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --accent-glow: 0 4px 20px rgba(102, 126, 234, 0.3);
-            --hover-bg: rgba(102, 126, 234, 0.08);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
-            --code-bg: #f5f5f7;
-            --tag-bg: rgba(102, 126, 234, 0.1);
-            --tag-text: #667eea;
-        }
-
-        /* ========== 深色主题 ========== */
-        :root[data-theme="dark"] {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-sidebar: #161b22;
-            --text-primary: #e6edf3;
-            --text-secondary: #b1bac4;
-            --text-muted: #6e7681;
-            --border-color: #30363d;
-            --accent-primary: #7c8aff;
-            --accent-secondary: #a855f7;
-            --accent-gradient: linear-gradient(135deg, #7c8aff 0%, #a855f7 100%);
-            --accent-glow: 0 4px 20px rgba(124, 138, 255, 0.4);
-            --hover-bg: rgba(124, 138, 255, 0.1);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
-            --code-bg: #1a1f26;
-            --tag-bg: rgba(124, 138, 255, 0.15);
-            --tag-text: #7c8aff;
-        }
-
-        /* ========== 赛博朋克主题 ========== */
-        :root[data-theme="cyberpunk"] {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-sidebar: #0d0d15;
-            --text-primary: #e0e0ff;
-            --text-secondary: #a0a0cc;
-            --text-muted: #5a5a8a;
-            --border-color: #1a1a3a;
-            --accent-primary: #00f0ff;
-            --accent-secondary: #ff00aa;
-            --accent-gradient: linear-gradient(135deg, #00f0ff 0%, #0080ff 50%, #ff00aa 100%);
-            --accent-glow: 0 0 20px rgba(0, 240, 255, 0.5);
-            --accent-glow-strong: 0 0 30px rgba(0, 240, 255, 0.8), 0 0 60px rgba(0, 240, 255, 0.4);
-            --hover-bg: rgba(0, 240, 255, 0.1);
-            --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 240, 255, 0.1);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.2);
-            --code-bg: #0a0a15;
-            --tag-bg: rgba(0, 240, 255, 0.15);
-            --tag-text: #00f0ff;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        [data-theme="cyberpunk"] body {
-            background: var(--bg-primary);
-            background-image: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 240, 255, 0.02) 2px, rgba(0, 240, 255, 0.02) 4px),
-                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 0%, transparent 50%, rgba(255, 0, 170, 0.02) 100%);
-        }
-
-        /* ========== 页头 ========== */
-        .header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0 24px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow-sm);
-        }
-
-        [data-theme="cyberpunk"] .header {
-            background: linear-gradient(180deg, #0a0a15 0%, #12121a 100%);
-            border-bottom: 1px solid var(--accent-primary);
-            box-shadow: var(--accent-glow);
-        }
-
-        .navbar-brand {
-            font-size: 24px;
-            font-weight: 700;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        [data-theme="cyberpunk"] .navbar-brand {
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: var(--accent-glow);
-        }
-
-        .navbar-nav {
-            display: flex;
-            gap: 8px;
-        }
-
-        .nav-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            background: transparent;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-
-        .nav-btn:hover {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
-        }
-
-        .nav-btn.primary {
-            background: var(--accent-gradient);
-            color: white;
-        }
-
-        /* ========== 主体 ========== */
-        .main {
-            padding: 32px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .page-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: var(--text-primary);
-        }
-
-        /* ========== 表单 ========== */
-        .form-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        [data-theme="cyberpunk"] .form-card {
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-md);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .form-input, .form-textarea, .form-select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-textarea {
-            min-height: 400px;
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            background: var(--accent-gradient);
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--accent-glow);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn.secondary {
-            background: var(--code-bg);
-            color: var(--text-secondary);
-        }
-
-        .btn.secondary:hover {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
-        }
-
-        .btn.danger {
-            background: #ef4444;
-        }
-
-        .btn.danger:hover {
-            background: #dc2626;
-        }
-
-        /* ========== 文章列表 ========== */
-        .article-list {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .article-item {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .article-item:last-child {
-            border-bottom: none;
-        }
-
-        .article-item:hover {
-            background: var(--hover-bg);
-        }
-
-        .article-info h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .article-info p {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        .article-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-btn {
-            padding: 6px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-primary);
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
-
-        .action-btn:hover {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
-            border-color: var(--accent-primary);
-        }
-
-        .action-btn.danger:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border-color: #ef4444;
-        }
-
-        /* ========== 统计面板 ========== */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--accent-primary);
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        /* ========== 标签 ========== */
-        .tag {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            background: var(--tag-bg);
-            color: var(--tag-text);
-            font-size: 12px;
-            margin-right: 4px;
-        }
-
-        /* ========== 页脚 ========== */
-        .footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-            padding: 24px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* ========== 右下角管理面板 ========== */
-        .admin-panel {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 1000;
-        }
-
-        .admin-toggle {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--accent-gradient);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--accent-glow-strong);
-            transition: all 0.3s;
-            color: white;
-            font-size: 24px;
-        }
-
-        .admin-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        .admin-toggle.active {
-            transform: rotate(45deg);
-        }
-
-        .admin-menu {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 16px;
-            min-width: 240px;
-            box-shadow: var(--shadow-lg);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.3s;
-        }
-
-        .admin-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .menu-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--text-secondary);
-        }
-
-        .menu-item:hover {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
-        }
-
-        .theme-selector {
-            display: flex;
-            gap: 8px;
-            padding: 12px;
-            background: var(--code-bg);
-            border-radius: 8px;
-            margin-top: 8px;
-        }
-
-        .theme-btn {
-            flex: 1;
-            padding: 8px;
-            border: 2px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-secondary);
-            cursor: pointer;
-            font-size: 12px;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-        }
-
-        .theme-btn:hover, .theme-btn.active {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-        }
-
-        /* ========== 响应式 ========== */
-        @media (max-width: 768px) {
-            .main {
-                padding: 16px;
-            }
-
-            .form-card {
-                padding: 20px;
-            }
-
-            .article-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-        }
-
-        /* ========== 滚动条 ========== */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-primary);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root[data-theme="light"] { --bg: #f0f2f5; --bg2: #fff; --text: #1a1a2e; --border: #e0e0e8; --accent: #667eea; }
+        [data-theme="dark"] { --bg: #0d1117; --bg2: #161b22; --text: #e6edf3; --border: #30363d; --accent: #7c8aff; }
+        [data-theme="cyberpunk"] { --bg: #0a0a0f; --bg2: #1a1a2e; --text: #00ff9d; --border: #00ff9d; --accent: #00ff9d; }
+        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        .header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .btn { padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg2); color: var(--text); cursor: pointer; text-decoration: none; }
+        .btn:hover { background: var(--accent); color: white; }
+        .btn-primary { background: var(--accent); color: white; border: none; }
+        .main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--bg2); padding: 1.5rem; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+        .stat-number { font-size: 2rem; font-weight: bold; color: var(--accent); }
+        .stat-label { font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem; }
+        .action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .action-card { background: var(--bg2); padding: 1.5rem; border-radius: 12px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid var(--border); transition: all 0.2s; }
+        .action-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+        .action-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .action-title { font-weight: 600; }
+        .action-desc { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+        .footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 1rem 2rem; margin-top: 2rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+        .fab { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: white; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 1.5rem; z-index: 1000; }
+        .fab-menu { position: fixed; bottom: 5rem; right: 2rem; background: var(--bg2); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); padding: 0.5rem; min-width: 180px; display: none; z-index: 1000; border: 1px solid var(--border); }
+        .fab-menu.show { display: block; }
+        .fab-item { padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; }
+        .fab-item:hover { background: var(--bg); }
+        .theme-switcher { position: relative; display: inline-flex; }
+        .theme-dropdown { position: absolute; top: 100%; right: 0; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none; min-width: 100px; z-index: 200; margin-top: 0.5rem; }
+        .theme-dropdown.show { display: block; }
+        .theme-option { padding: 0.5rem 1rem; cursor: pointer; }
+        .theme-option:hover { background: var(--bg); }
     </style>
 </head>
 <body>
-    <!-- 页头 -->
     <header class="header">
-        <div class="navbar-brand">⚙️ Erudit 后台</div>
-        <nav class="navbar-nav">
-            <a href="/" class="nav-btn">🏠 前台</a>
-            <a href="/docs" class="nav-btn">📖 API</a>
-        </nav>
+        <div>⚙️ Erudit 后台</div>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+            <div class="theme-switcher">
+                <button class="btn" onclick="toggleTheme()">🎨</button>
+                <div class="theme-dropdown" id="theme-dropdown">
+                    <div class="theme-option" onclick="setTheme('light')">☀️ 浅色</div>
+                    <div class="theme-option" onclick="setTheme('dark')">🌙 深色</div>
+                    <div class="theme-option" onclick="setTheme('cyberpunk')">💜 赛博</div>
+                </div>
+            </div>
+        </div>
     </header>
-
-    <!-- 主体 -->
-    <main class="main">
-        <h1 class="page-title">文章管理</h1>
-
-        <!-- 统计面板 -->
-        <div class="stats-grid" id="stats-grid">
+    <div class="main">
+        <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number" id="stat-articles">0</div>
+                <div class="stat-number" id="stat-articles">-</div>
                 <div class="stat-label">文章数</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="stat-categories">0</div>
+                <div class="stat-number" id="stat-views">-</div>
+                <div class="stat-label">站点浏览</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-categories">-</div>
                 <div class="stat-label">分类数</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="stat-tags">0</div>
+                <div class="stat-number" id="stat-tags">-</div>
                 <div class="stat-label">标签数</div>
             </div>
         </div>
-
-        <!-- 创建文章 -->
-        <div class="form-card">
-            <h2 style="margin-bottom: 20px;">创建新文章</h2>
-            <div class="form-group">
-                <label class="form-label">标题</label>
-                <input type="text" class="form-input" id="article-title" placeholder="输入文章标题">
+        <div class="action-grid">
+                <div class="action-icon">⚙️</div>
+                <div class="action-title">站点管理</div>
+                <div class="action-desc">网站设置与配置</div>
             </div>
-            <div class="form-group">
-                <label class="form-label">内容 (Markdown)</label>
-                <textarea class="form-textarea" id="article-content" placeholder="输入文章内容..."></textarea>
+            <div class="action-card" onclick="window.location.href='/admin/create'">
+                <div class="action-icon">✏️</div>
+                <div class="action-title">新建文章</div>
+                <div class="action-desc">创作新内容</div>
             </div>
-            <div style="display: flex; gap: 12px;">
-                <button class="btn" onclick="createArticle()">发布文章</button>
-                <button class="btn secondary" onclick="clearForm()">清空</button>
+            <div class="action-card" onclick="window.location.href='/admin/articles'">
+                <div class="action-icon">📋</div>
+                <div class="action-title">文章管理</div>
+                <div class="action-desc">编辑与管理文章</div>
             </div>
-        </div>
-
-        <!-- 文章列表 -->
-        <div class="article-list">
-            <div style="padding: 20px 24px; border-bottom: 1px solid var(--border-color);">
-                <h3>已有文章</h3>
+            <div class="action-card" onclick="window.location.href='/admin/categories'">
+                <div class="action-icon">📁</div>
+                <div class="action-title">分类管理</div>
+                <div class="action-desc">管理文章分类</div>
             </div>
-            <div id="article-list">
-                <div style="padding: 40px; text-align: center; color: var(--text-muted);">加载中...</div>
-            </div>
-        </div>
-    </main>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        © 2026 Erudit - 个人知识管理系统
-    </footer>
-
-    <!-- 右下角管理面板 -->
-    <div class="admin-panel">
-        <div class="admin-menu" id="admin-menu">
-            <div class="menu-title">主题切换</div>
-            <div class="theme-selector">
-                <button class="theme-btn active" data-theme="light" onclick="setTheme('light')">☀️ 浅色</button>
-                <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">🌙 深色</button>
-                <button class="theme-btn" data-theme="cyberpunk" onclick="setTheme('cyberpunk')">💜 赛博</button>
-            </div>
-            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
-                <div class="menu-title">快捷操作</div>
-                <div class="menu-item" onclick="window.location.href='/'">
-                    <span>🏠</span> 返回前台
-                </div>
-                <div class="menu-item" onclick="window.location.href='/docs'">
-                    <span>📖</span> API 文档
-                </div>
-                <div class="menu-item" onclick="window.open('https://github.com/trencps/erudit', '_blank')">
-                    <span>⭐</span> GitHub
-                </div>
+            <div class="action-card" onclick="window.location.href='/admin/tags'">
+                <div class="action-icon">🏷️</div>
+                <div class="action-title">标签管理</div>
+                <div class="action-desc">管理文章标签</div>
             </div>
         </div>
-        <button class="admin-toggle" id="admin-toggle" onclick="toggleAdminMenu()">⚙️</button>
     </div>
-
+    <footer class="footer">
+        <div class="footer-content">
+            <div>© 2026 Erudit - 个人知识管理系统</div>
+            <div>文章: <span id="footer-articles">-</span> | 浏览: <span id="footer-views">-</span> | 分类: <span id="footer-categories">-</span> | 标签: <span id="footer-tags">-</span></div>
+        </div>
+    </footer>
+    <button class="fab" id="fab-btn" onclick="toggleFabMenu()">⚙️</button>
+    <div class="fab-menu" id="fab-menu">
+        <div class="fab-item" onclick="window.location.href='/admin/create'">✏️ 新建文章</div>
+        <div class="fab-item" onclick="window.location.href='/admin/articles'">📋 文章管理</div>
+        <div class="fab-item" onclick="window.location.href='/admin/categories'">📁 分类管理</div>
+        <div class="fab-item" onclick="window.location.href='/admin/tags'">🏷️ 标签管理</div>
+        <div class="fab-item" onclick="window.location.href='/admin/links'">🔗 友情链接</div>
+        <div class="fab-item" onclick="window.location.href='/'">🏠 返回首页</div>
+        <div class="fab-item" onclick="showStats()">📊 统计信息</div>
+        <div class="fab-item" onclick="doLogout()">🚪 退出登录</div>
+    </div>
     <script>
         let token = localStorage.getItem('erudit-token');
-
-        // 初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!token) {
-                window.location.href = '/';
-            } else {
-                loadStats();
-                loadArticles();
-            }
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('[1] Admin DOM loaded');
+            if (!token) { alert('请先登录'); window.location.href='/login'; return; }
+            loadStats();
             loadTheme();
-            
-            // 点击外部关闭菜单
-            document.addEventListener('click', (e) => {
-                const panel = document.querySelector('.admin-panel');
-                if (!panel.contains(e.target)) {
-                    document.getElementById('admin-menu').classList.remove('show');
-                    document.getElementById('admin-toggle').classList.remove('active');
-                }
-            });
         });
-
-        // 加载统计
-        async function loadStats() {
-            try {
-                const res = await fetch('/stats');
-                const data = await res.json();
-                document.getElementById('stat-articles').textContent = data.articles || 0;
-                document.getElementById('stat-categories').textContent = data.categories || 0;
-                document.getElementById('stat-tags').textContent = data.tags || 0;
-            } catch (e) {
-                console.error('加载统计失败:', e);
-            }
+        
+        function loadStats() {
+            fetch('/stats')
+                .then(r => r.json())
+                .then(data => {
+                    console.log('[2] Stats:', data);
+                    document.getElementById('stat-articles').textContent = data.articles || 0;
+                    document.getElementById('stat-views').textContent = data.views || 0;
+                    document.getElementById('stat-categories').textContent = data.categories || 0;
+                    document.getElementById('stat-tags').textContent = data.tags || 0;
+                    document.getElementById('footer-articles').textContent = data.articles || 0;
+                    document.getElementById('footer-views').textContent = data.views || 0;
+                    document.getElementById('footer-categories').textContent = data.categories || 0;
+                    document.getElementById('footer-tags').textContent = data.tags || 0;
+                })
+                .catch(e => console.error('[2] Error:', e));
         }
-
-        // 加载文章列表
-        async function loadArticles() {
-            try {
-                const res = await fetch('/articles', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const data = await res.json();
-                const list = document.getElementById('article-list');
-                
-                if (data.articles && data.articles.length > 0) {
-                    list.innerHTML = data.articles.map(a => `
-                        <div class="article-item">
-                            <div class="article-info">
-                                <h3>${a.title}</h3>
-                                <p>${a.created_at || '未知'} ${a.category ? '• ' + a.category : ''}</p>
-                            </div>
-                            <div class="article-actions">
-                                <button class="action-btn" onclick="editArticle('${a.slug}')">编辑</button>
-                                <button class="action-btn danger" onclick="deleteArticle('${a.slug}')">删除</button>
-                            </div>
-                        </div>
-                    `).join('');
-                } else {
-                    list.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-muted);">暂无文章</div>';
-                }
-            } catch (e) {
-                document.getElementById('article-list').innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-muted);">加载失败</div>';
-            }
-        }
-
-        // 创建文章
-        async function createArticle() {
-            const title = document.getElementById('article-title').value.trim();
-            const content = document.getElementById('article-content').value.trim();
-            
-            if (!title || !content) {
-                alert('请输入标题和内容');
-                return;
-            }
-            
-            try {
-                const res = await fetch('/articles', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ title, content })
-                });
-                
-                if (res.ok) {
-                    alert('发布成功！');
-                    clearForm();
-                    loadArticles();
-                    loadStats();
-                } else {
-                    alert('发布失败，请重试');
-                }
-            } catch (e) {
-                alert('发布失败: ' + e.message);
-            }
-        }
-
-        // 清空表单
-        function clearForm() {
-            document.getElementById('article-title').value = '';
-            document.getElementById('article-content').value = '';
-        }
-
-        // 编辑文章
-        function editArticle(slug) {
-            window.location.href = `/admin?edit=${slug}`;
-        }
-
-        // 删除文章
-        async function deleteArticle(slug) {
-            if (!confirm('确定要删除这篇文章吗？')) return;
-            
-            try {
-                const res = await fetch(`/articles/${slug}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (res.ok) {
-                    loadArticles();
-                    loadStats();
-                } else {
-                    alert('删除失败');
-                }
-            } catch (e) {
-                alert('删除失败: ' + e.message);
-            }
-        }
-
-        // 主题切换
+        
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('erudit-theme', theme);
-            
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.theme === theme);
-            });
+            document.getElementById('theme-dropdown').classList.remove('show');
         }
-
+        
         function loadTheme() {
             const saved = localStorage.getItem('erudit-theme') || 'light';
             setTheme(saved);
         }
-
-        // 管理面板切换
-        function toggleAdminMenu() {
-            const menu = document.getElementById('admin-menu');
-            const toggle = document.getElementById('admin-toggle');
-            menu.classList.toggle('show');
-            toggle.classList.toggle('active');
+        
+        function toggleTheme() {
+            document.getElementById('theme-dropdown').classList.toggle('show');
+        }
+        
+        function toggleFabMenu() {
+            document.getElementById('fab-menu').classList.toggle('show');
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.fab') && !e.target.closest('.fab-menu')) {
+                document.getElementById('fab-menu').classList.remove('show');
+            }
+            if (!e.target.closest('.theme-switcher')) {
+                document.getElementById('theme-dropdown').classList.remove('show');
+            }
+        });
+        
+        function doLogout() {
+            token = null;
+            localStorage.removeItem('erudit-token');
+            window.location.href = '/';
         }
     </script>
 </body>
