@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erudit - 文章详情</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root[data-theme="light"] { --bg: #f0f2f5; --bg2: #fff; --text: #1a1a2e; --border: #e0e0e8; --accent: #667eea; }
+        [data-theme="dark"] { --bg: #0d1117; --bg2: #161b22; --text: #e6edf3; --border: #30363d; --accent: #7c8aff; }
+        [data-theme="cyberpunk"] { --bg: #0a0a0f; --bg2: #1a1a2e; --text: #00ff9d; --border: #00ff9d; --accent: #00ff9d; }
+        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        .header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .btn { padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg2); color: var(--text); cursor: pointer; text-decoration: none; }
+        .btn:hover { background: var(--accent); color: white; }
+        .main { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .article-view { background: var(--bg2); padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .article-header { margin-bottom: 2rem; }
+        .article-title-main { font-size: 2rem; margin-bottom: 1rem; }
+        .article-meta { color: var(--text-secondary); font-size: 0.875rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .article-content { line-height: 1.8; }
+        .article-content h1, .article-content h2, .article-content h3 { margin: 1.5rem 0 0.5rem; }
+        .article-content pre { background: var(--bg); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+        .article-content code { background: var(--bg); padding: 0.2rem 0.4rem; border-radius: 4px; }
+        .article-content img { max-width: 100%; border-radius: 8px; }
+        .article-nav { display: flex; justify-content: space-between; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+        .article-nav a { padding: 0.75rem 1.5rem; border: 1px solid var(--border); border-radius: 6px; text-decoration: none; color: var(--text); }
+        .article-nav a:hover { background: var(--accent); color: white; border-color: var(--accent); }
+        .article-footer { margin-top: 2rem; padding: 1.5rem; background: var(--bg); border-radius: 8px; font-size: 0.875rem; color: var(--text-secondary); }
+        .theme-switcher { position: relative; display: inline-flex; }
+        .theme-dropdown { position: absolute; top: 100%; right: 0; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none; min-width: 100px; z-index: 200; margin-top: 0.5rem; }
+        .theme-dropdown.show { display: block; }
+        .theme-option { padding: 0.5rem 1rem; cursor: pointer; }
+        .theme-option:hover { background: var(--bg); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="btn">← 返回首页</a>
+        <div class="theme-switcher">
+            <button class="btn" onclick="toggleTheme()">🎨</button>
+            <div class="theme-dropdown" id="theme-dropdown">
+                <div class="theme-option" onclick="setTheme('light')">☀️ 浅色</div>
+                <div class="theme-option" onclick="setTheme('dark')">🌙 深色</div>
+                <div class="theme-option" onclick="setTheme('cyberpunk')">💜 赛博</div>
+            </div>
+        </div>
+    </header>
+    <div class="main">
+        <div class="article-view" id="article-view">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+    <script>
+        let token = localStorage.getItem('erudit-token');
+        const slug = window.location.pathname.replace('/article/', '');
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('[1] Loading article:', slug);
+            loadArticle();
+            loadTheme();
+        });
+        
+        function loadArticle() {
+            fetch('/articles/' + slug)
+                .then(r => r.json())
+                .then(data => {
+                    console.log('[2] Article loaded');
+                    const date = (data.created_at || '').split('T')[0];
+                    document.getElementById('article-view').innerHTML = `
+                        <div class="article-header">
+                            <h1 class="article-title-main">${data.title}</h1>
+                            <div class="article-meta">
+                                <span>📁 ${data.category || '未分类'}</span>
+                                <span>📅 ${date}</span>
+                                <span>👁️ ${data.views || 0} 浏览</span>
+                            </div>
+                        </div>
+                        <div class="article-content">${markdownToHtml(data.content || '')}</div>
+                        <div class="article-nav">
+                            <a href="#" id="prev-article">← 上一篇文章</a>
+                            <a href="#" id="next-article">下一篇文章 →</a>
+                        </div>
+                        <div class="article-footer">
+                            <div>作者：Erudit 管理员</div>
+                            <div>转载声明：转载请附上原文链接</div>
+
+                        </div>
+                    `;
+                    loadPrevNext(data.id);
+                })
+                .catch(e => {
+                    console.error('[2] Error:', e);
+                    document.getElementById('article-view').innerHTML = '<div class="empty-state">加载失败</div>';
+                });
+        }
+        
+        function loadPrevNext(currentId) {
+            fetch('/articles?page=1&page_size=100')
+                .then(r => r.json())
+                .then(data => {
+                    const idx = data.articles.findIndex(a => a.id === currentId);
+                    const prev = idx > 0 ? data.articles[idx - 1] : null;
+                    const next = idx < data.articles.length - 1 ? data.articles[idx + 1] : null;
+                    const prevLink = document.getElementById('prev-article');
+                    const nextLink = document.getElementById('next-article');
+                    prevLink.href = prev ? '/article/' + prev.slug : '#';
+                    prevLink.textContent = prev ? '← ' + prev.title : '← 没有了';
+                    nextLink.href = next ? '/article/' + next.slug : '#';
+                    nextLink.textContent = next ? next.title + ' →' : '没有了 →';
+                    if (!prev) prevLink.style.opacity = '0.5';
+                    if (!next) nextLink.style.opacity = '0.5';
+                });
+        }
+        
+        function markdownToHtml(md) {
+            if (!md) return '';
+            return md
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+                .replace(/\*(.*)\*/gim, '<em>$1</em>')
+                .replace(/```([\s\S]*?)```/gim, '<pre><code>$1</code></pre>')
+                .replace(/`([^`]+)`/gim, '<code>$1</code>')
+                .replace(/\n/gim, '<br />');
+        }
+        
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('erudit-theme', theme);
+            document.getElementById('theme-dropdown').classList.remove('show');
+        }
+        
+        function loadTheme() {
+            const saved = localStorage.getItem('erudit-theme') || 'light';
+            setTheme(saved);
+        }
+        
+        function toggleTheme() {
+            document.getElementById('theme-dropdown').classList.toggle('show');
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.theme-switcher')) {
+                document.getElementById('theme-dropdown').classList.remove('show');
+            }
+        });
+    </script>
+
+    <button class="fab" id="fab-btn" onclick="toggleFabMenu()">⚙️</button>
+    <div class="fab-menu" id="fab-menu">
+        <div class="fab-item" onclick="showStats()">📊 统计信息</div>
+        <div class="fab-item" onclick="window.location.href='/links'">🔗 友情链接</div>
+    </div>
+</body>
+</html>

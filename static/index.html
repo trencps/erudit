@@ -5,1926 +5,552 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erudit - 个人知识库</title>
     <style>
-        /* ========== 梦幻浅色主题 ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root[data-theme="light"] {
-            --bg-primary: #faf5ff;
+            --bg-primary: #f0f2f5;
             --bg-secondary: #ffffff;
-            --bg-sidebar: #f8f0ff;
-            --text-primary: #2d1b4e;
-            --text-secondary: #5a4575;
-            --text-muted: #9a85b5;
-            --border-color: #e8dff5;
-            --accent-primary: #a855f7;
-            --accent-secondary: #ec4899;
-            --accent-gradient: linear-gradient(135deg, #c084fc 0%, #a855f7 25%, #ec4899 50%, #f472b6 75%, #fb7185 100%);
-            --accent-glow: 0 0 20px rgba(168, 85, 247, 0.3);
-            --accent-glow-strong: 0 0 30px rgba(168, 85, 247, 0.5), 0 0 60px rgba(236, 72, 153, 0.3);
-            --hover-bg: rgba(168, 85, 247, 0.05);
-            --shadow-sm: 0 2px 12px rgba(168, 85, 247, 0.08);
-            --shadow-md: 0 4px 24px rgba(168, 85, 247, 0.12), 0 2px 8px rgba(236, 72, 153, 0.06);
-            --shadow-lg: 0 10px 40px rgba(168, 85, 247, 0.15), 0 4px 16px rgba(236, 72, 153, 0.08);
-            --code-bg: #f5f0ff;
-            --tag-bg: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
-            --tag-text: #9333ea;
-            --card-gradient: linear-gradient(135deg, rgba(192, 132, 252, 0.05) 0%, rgba(244, 114, 182, 0.05) 100%);
-            --blur-bg: blur(20px);
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a6a;
+            --border-color: #e0e0e8;
+            --accent-primary: #667eea;
+            --accent-secondary: #764ba2;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-
-        [data-theme="light"] body {
-            background: linear-gradient(135deg, #faf5ff 0%, #fff0f5 50%, #f0f5ff 100%);
-            background-attachment: fixed;
-            position: relative;
-        }
-
-        [data-theme="light"] body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(192, 132, 252, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        [data-theme="light"] .header {
-            background: linear-gradient(135deg, rgba(192, 132, 252, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
-            backdrop-filter: var(--blur-bg);
-            -webkit-backdrop-filter: var(--blur-bg);
-            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
-            box-shadow: var(--shadow-md);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        [data-theme="light"] .navbar-brand {
-            font-weight: 700;
-            background: linear-gradient(90deg, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.4));
-        }
-
-        [data-theme="light"] .navbar-btn {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            color: #7c3aed;
-            backdrop-filter: var(--blur-bg);
-            -webkit-backdrop-filter: var(--blur-bg);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-        }
-
-        [data-theme="light"] .navbar-btn:hover {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #a855f7;
-            box-shadow: var(--accent-glow);
-            transform: translateY(-2px);
-        }
-
-        [data-theme="light"] .navbar-btn.primary {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            color: white;
-            border: none;
-            font-weight: 600;
-            box-shadow: var(--accent-glow);
-        }
-
-        [data-theme="light"] .navbar-btn.primary:hover {
-            box-shadow: var(--accent-glow-strong);
-            transform: translateY(-2px);
-        }
-
-        [data-theme="light"] .sidebar {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: var(--blur-bg);
-            -webkit-backdrop-filter: var(--blur-bg);
-            border: 1px solid rgba(168, 85, 247, 0.15);
-            box-shadow: var(--shadow-md);
-        }
-
-        [data-theme="light"] .stat-item {
-            background: linear-gradient(135deg, rgba(192, 132, 252, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            box-shadow: var(--shadow-sm);
-            backdrop-filter: var(--blur-bg);
-            -webkit-backdrop-filter: var(--blur-bg);
-        }
-
-        [data-theme="light"] .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        [data-theme="light"] .stat-label {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        [data-theme="light"] .article-item {
-            border: 1px solid rgba(168, 85, 247, 0.1);
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: var(--blur-bg);
-            -webkit-backdrop-filter: var(--blur-bg);
-            transition: all 0.3s ease;
-        }
-
-        [data-theme="light"] .article-item:hover {
-            border-color: rgba(168, 85, 247, 0.4);
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: var(--shadow-md);
-            transform: translateX(4px);
-        }
-
-        [data-theme="light"] .article-item.active {
-            background: linear-gradient(90deg, rgba(192, 132, 252, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
-            border-color: #a855f7;
-            box-shadow: var(--accent-glow);
-        }
-
-        [data-theme="light"] .content-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: var(--blur-bg);
-            -webkit-backdrop-filter: var(--blur-bg);
-            border: 1px solid rgba(168, 85, 247, 0.15);
-            box-shadow: var(--shadow-lg);
-        }
-
-        [data-theme="light"] .form-input,
-        [data-theme="light"] .editor-input,
-        [data-theme="light"] .editor-select,
-        [data-theme="light"] .editor-textarea {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            color: var(--text-primary);
-            backdrop-filter: var(--blur-bg);
-            -webkit-backdrop-filter: var(--blur-bg);
-        }
-
-        [data-theme="light"] .form-input:focus,
-        [data-theme="light"] .editor-input:focus,
-        [data-theme="light"] .editor-select:focus,
-        [data-theme="light"] .editor-textarea:focus {
-            border-color: #a855f7;
-            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1), var(--accent-glow);
-            outline: none;
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        [data-theme="light"] .btn {
-            background: linear-gradient(135deg, #c084fc, #ec4899);
-            border: none;
-            color: white;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-        }
-
-        [data-theme="light"] .btn:hover {
-            box-shadow: var(--accent-glow-strong);
-            transform: translateY(-2px);
-        }
-
-        [data-theme="light"] .btn-danger {
-            background: linear-gradient(135deg, #f43f5e, #e11d48);
-        }
-
-        [data-theme="light"] .btn-danger:hover {
-            box-shadow: 0 0 25px rgba(244, 63, 94, 0.5);
-        }
-
-        [data-theme="light"] .tag {
-            background: var(--tag-bg);
-            color: var(--tag-text);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            font-size: 0.75rem;
-        }
-
-        [data-theme="light"] .login-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: var(--blur-bg);
-            -webkit-backdrop-filter: var(--blur-bg);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            box-shadow: var(--shadow-lg), var(--accent-glow);
-        }
-
-        [data-theme="light"] .theme-toggle {
-            background: rgba(168, 85, 247, 0.15);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-        }
-
-        [data-theme="light"] .theme-toggle::before {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-        }
-
-        [data-theme="light"] .footer {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: var(--blur-bg);
-            -webkit-backdrop-filter: var(--blur-bg);
-            border-top: 1px solid rgba(168, 85, 247, 0.15);
-        }
-
-        [data-theme="light"] .empty-state-icon {
-            filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.4));
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        [data-theme="light"] ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        [data-theme="light"] ::-webkit-scrollbar-track {
-            background: rgba(168, 85, 247, 0.05);
-        }
-
-        [data-theme="light"] ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #c084fc, #ec4899);
-            border-radius: 4px;
-        }
-
-        [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #a855f7, #db2777);
-        }
-
-        [data-theme="light"] ::selection {
-            background: rgba(168, 85, 247, 0.2);
-            color: #7c3aed;
-        }
-
-
-        :root[data-theme="dark"] {
+        [data-theme="dark"] {
             --bg-primary: #0d1117;
             --bg-secondary: #161b22;
-            --bg-sidebar: #161b22;
             --text-primary: #e6edf3;
             --text-secondary: #b1bac4;
-            --text-muted: #6e7681;
             --border-color: #30363d;
             --accent-primary: #7c8aff;
-            --accent-secondary: #a855f7;
-            --accent-gradient: linear-gradient(135deg, #7c8aff 0%, #a855f7 100%);
-            --accent-glow: 0 4px 20px rgba(124, 138, 255, 0.4);
-            --hover-bg: rgba(124, 138, 255, 0.1);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
-            --code-bg: #1a1f26;
-            --tag-bg: rgba(124, 138, 255, 0.15);
-            --tag-text: #7c8aff;
+            --shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
-
-        /* ========== 赛博朋克主题 ========== */
-        :root[data-theme="cyberpunk"] {
+        [data-theme="cyberpunk"] {
             --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-sidebar: #0d0d15;
-            --text-primary: #e0e0ff;
-            --text-secondary: #a0a0cc;
-            --text-muted: #5a5a8a;
-            --border-color: #1a1a3a;
-            --accent-primary: #00f0ff;
-            --accent-secondary: #ff00aa;
-            --accent-gradient: linear-gradient(135deg, #00f0ff 0%, #0080ff 50%, #ff00aa 100%);
-            --accent-glow: 0 0 20px rgba(0, 240, 255, 0.5);
-            --accent-glow-strong: 0 0 30px rgba(0, 240, 255, 0.8), 0 0 60px rgba(0, 240, 255, 0.4);
-            --hover-bg: rgba(0, 240, 255, 0.1);
-            --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 240, 255, 0.1);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.2);
-            --code-bg: #0a0a15;
-            --tag-bg: rgba(0, 240, 255, 0.15);
-            --tag-text: #00f0ff;
+            --bg-secondary: #1a1a2e;
+            --text-primary: #00ff9d;
+            --text-secondary: #ff00ff;
+            --border-color: #00ff9d;
+            --accent-primary: #00ff9d;
+            --shadow: 0 0 20px rgba(0,255,157,0.3);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        [data-theme="cyberpunk"] .stat-number {
-            font-family: 'Courier New', monospace;
-            color: var(--accent-primary);
-            text-shadow: var(--accent-glow);
-        }
-
-        [data-theme="cyberpunk"] .article-item {
-            border-color: var(--border-color);
-        }
-
-        [data-theme="cyberpunk"] .article-item:hover,
-        [data-theme="cyberpunk"] .article-item.active {
-            border-color: var(--accent-primary);
-            background: var(--hover-bg);
-        }
-
-        [data-theme="cyberpunk"] .form-input,
-        [data-theme="cyberpunk"] .editor-input,
-        [data-theme="cyberpunk"] .editor-textarea {
-            background: var(--code-bg);
-            border-color: var(--border-color);
-            font-family: 'Courier New', monospace;
-        }
-
-        [data-theme="cyberpunk"] .form-input:focus,
-        [data-theme="cyberpunk"] .editor-input:focus,
-        [data-theme="cyberpunk"] .editor-textarea:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-        }
-
-        [data-theme="cyberpunk"] .btn {
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
-        }
-
-        [data-theme="cyberpunk"] .btn-primary {
-            background: transparent;
-            border: 1px solid var(--accent-primary);
-            color: var(--accent-primary);
-        }
-
-        [data-theme="cyberpunk"] .btn-primary:hover {
-            background: var(--accent-primary);
-            color: #0a0a0f;
-            box-shadow: var(--accent-glow-strong);
-        }
-
-        [data-theme="cyberpunk"] .login-card {
-            border: 1px solid var(--accent-primary);
-            box-shadow: var(--shadow-lg), var(--accent-glow);
-        }
-
-        [data-theme="cyberpunk"] .theme-toggle {
-            background: rgba(0, 240, 255, 0.2);
-            border: 1px solid var(--accent-primary);
-        }
-
-        [data-theme="cyberpunk"] .theme-toggle::before {
-            background: var(--accent-primary);
-            box-shadow: 0 0 10px var(--accent-primary);
-        }
-
-        [data-theme="cyberpunk"] ::-webkit-scrollbar-thumb {
-            background: var(--accent-primary);
-        }
-
         
-        /* ========== 霓虹东京主题 ========== */
-        :root[data-theme="neontokyo"] {
-            --bg-primary: #0f0515;
-            --bg-secondary: #1a0a25;
-            --bg-sidebar: #150820;
-            --text-primary: #f0d0ff;
-            --text-secondary: #c8a0e0;
-            --text-muted: #6a4a8a;
-            --border-color: #2a1545;
-            --accent-primary: #ff6ec7;
-            --accent-secondary: #7b68ee;
-            --accent-gradient: linear-gradient(135deg, #ff6ec7 0%, #9d7fff 50%, #7b68ee 100%);
-            --accent-glow: 0 0 25px rgba(255, 110, 199, 0.6);
-            --accent-glow-strong: 0 0 40px rgba(255, 110, 199, 0.9), 0 0 80px rgba(123, 104, 238, 0.4);
-            --hover-bg: rgba(255, 110, 199, 0.1);
-            --shadow-sm: 0 2px 15px rgba(255, 110, 199, 0.2);
-            --shadow-md: 0 4px 25px rgba(123, 104, 238, 0.3), 0 0 20px rgba(255, 110, 199, 0.1);
-            --shadow-lg: 0 10px 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 110, 199, 0.25);
-            --code-bg: #120818;
-            --tag-bg: rgba(255, 110, 199, 0.15);
-            --tag-text: #ff9ed9;
-            --pink-glow: 0 0 20px rgba(255, 110, 199, 0.5);
-            --purple-glow: 0 0 20px rgba(123, 104, 238, 0.5);
-        }
-
-        [data-theme="neontokyo"] body {
-            background: var(--bg-primary);
-            background-image: 
-                radial-gradient(ellipse at 20% 20%, rgba(255, 110, 199, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(123, 104, 238, 0.08) 0%, transparent 50%),
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 50px,
-                    rgba(255, 110, 199, 0.02) 50px,
-                    rgba(255, 110, 199, 0.02) 51px
-                );
-        }
-
-        [data-theme="neontokyo"] .header {
-            background: linear-gradient(180deg, #150820 0%, #1a0a25 100%);
-            border-bottom: 2px solid transparent;
-            border-image: linear-gradient(90deg, #ff6ec7, #7b68ee) 1;
-            box-shadow: 0 5px 30px rgba(255, 110, 199, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            position: relative;
-        }
-
-        [data-theme="neontokyo"] .header::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ff6ec7, #7b68ee, #ff6ec7, transparent);
-            animation: neonFlow 4s linear infinite;
-        }
-
-        [data-theme="neontokyo"] .navbar-brand {
-            font-family: 'Segoe UI', sans-serif;
-            font-weight: 700;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, #ff6ec7, #ffd700, #7b68ee);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 10px rgba(255, 110, 199, 0.5));
-        }
-
-        [data-theme="neontokyo"] .navbar-btn {
-            background: rgba(255, 110, 199, 0.08);
-            border: 1px solid rgba(255, 110, 199, 0.4);
-            color: #ff9ed9;
-            font-weight: 500;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-            overflow: hidden;
-        }
-
-        [data-theme="neontokyo"] .navbar-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s;
-        }
-
-        [data-theme="neontokyo"] .navbar-btn:hover::before {
-            left: 100%;
-        }
-
-        [data-theme="neontokyo"] .navbar-btn:hover {
-            background: rgba(255, 110, 199, 0.2);
-            border-color: #ff6ec7;
-            box-shadow: var(--accent-glow);
-            color: #fff;
-        }
-
-        [data-theme="neontokyo"] .navbar-btn.primary {
-            background: linear-gradient(135deg, #ff6ec7, #9d7fff);
-            color: #fff;
-            border: none;
-            font-weight: 600;
-            box-shadow: var(--purple-glow);
-        }
-
-        [data-theme="neontokyo"] .navbar-btn.primary:hover {
-            box-shadow: var(--accent-glow-strong);
-            transform: translateY(-2px);
-        }
-
-        [data-theme="neontokyo"] .sidebar {
-            background: linear-gradient(180deg, #150820 0%, #1a0a25 100%);
-            border: 1px solid var(--border-color);
-            border-left: 3px solid #ff6ec7;
-            box-shadow: var(--shadow-md);
-            position: relative;
-        }
-
-        [data-theme="neontokyo"] .sidebar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, #ff6ec7, #7b68ee, #ff6ec7);
-        }
-
-        [data-theme="neontokyo"] .stat-item {
-            background: linear-gradient(135deg, 
-                rgba(255, 110, 199, 0.15) 0%, 
-                rgba(26, 10, 37, 0.95) 50%,
-                rgba(123, 104, 238, 0.15) 100%
-            );
-            border: 1px solid rgba(255, 110, 199, 0.4);
-            box-shadow: var(--shadow-sm), inset 0 0 30px rgba(255, 110, 199, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        [data-theme="neontokyo"] .stat-item::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                rgba(255, 110, 199, 0.1),
-                transparent,
-                rgba(123, 104, 238, 0.1),
-                transparent
-            );
-            animation: hologramSpin 6s linear infinite;
-        }
-
-        [data-theme="neontokyo"] .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, #ff6ec7, #ffd700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 8px rgba(255, 110, 199, 0.6));
-            position: relative;
-            z-index: 1;
-        }
-
-        [data-theme="neontokyo"] .stat-label {
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.7rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        [data-theme="neontokyo"] .article-item {
-            border: 1px solid var(--border-color);
-            background: linear-gradient(90deg, 
-                rgba(255, 110, 199, 0.05) 0%,
-                transparent 40%
-            );
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        [data-theme="neontokyo"] .article-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: linear-gradient(180deg, #ff6ec7, #7b68ee);
-            opacity: 0.4;
-            transition: opacity 0.3s;
-        }
-
-        [data-theme="neontokyo"] .article-item:hover::before {
-            opacity: 1;
-            box-shadow: var(--pink-glow);
-        }
-
-        [data-theme="neontokyo"] .article-item:hover {
-            border-color: rgba(255, 110, 199, 0.5);
-            background: var(--hover-bg);
-            box-shadow: var(--shadow-sm);
-        }
-
-        [data-theme="neontokyo"] .article-item.active {
-            background: linear-gradient(90deg, 
-                rgba(255, 110, 199, 0.2) 0%,
-                rgba(26, 10, 37, 0.95) 100%
-            );
-            border-color: #ff6ec7;
-            box-shadow: var(--accent-glow);
-        }
-
-        [data-theme="neontokyo"] .content-panel {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-lg);
-            position: relative;
-        }
-
-        [data-theme="neontokyo"] .content-panel::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, transparent 50%, rgba(255, 110, 199, 0.1) 50%);
-            pointer-events: none;
-        }
-
-        [data-theme="neontokyo"] .form-input,
-        [data-theme="neontokyo"] .editor-input,
-        [data-theme="neontokyo"] .editor-select,
-        [data-theme="neontokyo"] .editor-textarea {
-            background: var(--code-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        [data-theme="neontokyo"] .form-input:focus,
-        [data-theme="neontokyo"] .editor-input:focus,
-        [data-theme="neontokyo"] .editor-select:focus,
-        [data-theme="neontokyo"] .editor-textarea:focus {
-            border-color: #ff6ec7;
-            box-shadow: 
-                inset 0 0 20px rgba(0, 0, 0, 0.5),
-                0 0 20px rgba(255, 110, 199, 0.3),
-                0 0 40px rgba(123, 104, 238, 0.15);
-            outline: none;
-        }
-
-        [data-theme="neontokyo"] .btn {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        [data-theme="neontokyo"] .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        [data-theme="neontokyo"] .btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        [data-theme="neontokyo"] .btn-primary {
-            background: linear-gradient(135deg, #ff6ec7, #9d7fff);
-            border: none;
-            color: #fff;
-            box-shadow: var(--shadow-sm);
-        }
-
-        [data-theme="neontokyo"] .btn-primary:hover {
-            box-shadow: var(--accent-glow-strong);
-            transform: translateY(-2px);
-        }
-
-        [data-theme="neontokyo"] .btn-danger {
-            background: linear-gradient(135deg, #ff4757, #ff6b81);
-            border: none;
-            color: #fff;
-        }
-
-        [data-theme="neontokyo"] .btn-danger:hover {
-            box-shadow: 0 0 25px rgba(255, 71, 87, 0.6);
-        }
-
-        [data-theme="neontokyo"] .tag {
-            background: var(--tag-bg);
-            color: var(--tag-text);
-            border: 1px solid rgba(255, 110, 199, 0.3);
-            font-size: 0.75rem;
-            box-shadow: 0 0 10px rgba(255, 110, 199, 0.2);
-        }
-
-        [data-theme="neontokyo"] .login-card {
-            background: linear-gradient(135deg, #1a0a25, #251035);
-            border: 1px solid rgba(255, 110, 199, 0.4);
-            box-shadow: var(--shadow-lg), var(--accent-glow);
-            position: relative;
-        }
-
-        [data-theme="neontokyo"] .login-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #ff6ec7, transparent, #7b68ee, transparent);
-            z-index: -1;
-            animation: borderRotate 4s linear infinite;
-        }
-
-        [data-theme="neontokyo"] .theme-toggle {
-            background: rgba(255, 110, 199, 0.15);
-            border: 1px solid rgba(255, 110, 199, 0.5);
-        }
-
-        [data-theme="neontokyo"] .theme-toggle::before {
-            background: linear-gradient(135deg, #ff6ec7, #7b68ee);
-            box-shadow: 0 0 15px rgba(255, 110, 199, 0.8);
-        }
-
-        [data-theme="neontokyo"] .footer {
-            background: linear-gradient(180deg, #150820, #0f0515);
-            border-top: 1px solid rgba(255, 110, 199, 0.3);
-        }
-
-        [data-theme="neontokyo"] .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #ff6ec7, #7b68ee, transparent);
-        }
-
-        [data-theme="neontokyo"] .empty-state-icon {
-            filter: drop-shadow(0 0 25px rgba(255, 110, 199, 0.7));
-            animation: float 3s ease-in-out infinite;
-        }
-
-        [data-theme="neontokyo"] ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        [data-theme="neontokyo"] ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-        }
-
-        [data-theme="neontokyo"] ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #ff6ec7, #7b68ee);
-            border-radius: 4px;
-        }
-
-        [data-theme="neontokyo"] ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #ff9ed9, #9d7fff);
-        }
-
-        [data-theme="neontokyo"] ::selection {
-            background: rgba(255, 110, 199, 0.3);
-            color: #fff;
-        }
-
-        @keyframes neonFlow {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(60deg); }
-        }
-
-        @keyframes hologramSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes borderRotate {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-
-        /* ========== 基础样式 ========== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            transition: background 0.3s, color 0.3s;
         }
-
-        [data-theme="cyberpunk"] body {
-            background: var(--bg-primary);
-            background-image: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 240, 255, 0.02) 2px, rgba(0, 240, 255, 0.02) 4px),
-                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 0%, transparent 50%, rgba(255, 0, 170, 0.02) 100%);
-        }
-
-        /* ========== 页头 ========== */
+        
+        /* 页头 */
         .header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
-            padding: 0 24px;
-            height: 64px;
+            padding: 1rem 2rem;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s;
         }
-
-        [data-theme="cyberpunk"] .header {
-            background: linear-gradient(180deg, #0a0a15 0%, #12121a 100%);
-            border-bottom: 1px solid var(--accent-primary);
-            box-shadow: var(--accent-glow);
+        .navbar-brand { font-size: 1.5rem; font-weight: bold; }
+        .header-right { display: flex; align-items: center; gap: 1rem; }
+        
+        /* 主题切换 */
+        .theme-switcher {
+            position: relative;
+            display: inline-flex;
         }
-
-        .navbar-brand {
-            font-size: 24px;
-            font-weight: 700;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        [data-theme="cyberpunk"] .navbar-brand {
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: var(--accent-glow);
-        }
-
-        .navbar-nav {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .nav-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            background: transparent;
-            color: var(--text-secondary);
+        .theme-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+        .theme-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            display: none;
+            min-width: 120px;
+            z-index: 200;
+            margin-top: 0.5rem;
+        }
+        .theme-dropdown.show { display: block; }
+        .theme-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 0.5rem;
         }
-
-        .nav-btn:hover {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
-        }
-
-        .nav-btn.primary {
-            background: var(--accent-gradient);
-            color: white;
-        }
-
-        .nav-btn.primary:hover {
-            opacity: 0.9;
-            box-shadow: var(--accent-glow);
-        }
-
-        /* ========== 主体布局 ========== */
+        .theme-option:hover { background: var(--bg-primary); }
+        
+        /* 主体 */
         .main {
-            display: flex;
-            min-height: calc(100vh - 64px);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
-
-        /* ========== 侧边栏 ========== */
-        .sidebar {
-            width: 280px;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border-color);
-            padding: 24px 16px;
-            overflow-y: auto;
-            transition: all 0.3s;
-        }
-
-        [data-theme="cyberpunk"] .sidebar {
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border-color);
-            box-shadow: inset -1px 0 20px rgba(0, 240, 255, 0.05);
-        }
-
-        .stats-panel {
+        
+        /* 文章列表 */
+        .article-list { display: flex; flex-direction: column; gap: 1.5rem; }
+        .article-card {
             background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .stat-item {
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
             display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .stat-item:last-child {
-            border-bottom: none;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .stat-number {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--accent-primary);
-        }
-
-        [data-theme="cyberpunk"] .stat-number {
-            text-shadow: var(--accent-glow);
-        }
-
-        .section-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 20px 0 12px 8px;
-        }
-
-        .article-list {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .article-item {
-            padding: 12px 16px;
-            border-radius: 8px;
+            gap: 1.5rem;
             cursor: pointer;
-            transition: all 0.2s;
-            color: var(--text-secondary);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-
-        .article-item:hover {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
+        .article-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); } .article-info { flex: 1; }
+        
+        .article-info { flex: 1; }
+        .article-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .article-meta { display: flex; gap: 1rem; font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .article-summary { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+        
+        /* 分页 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
         }
-
-        .article-item.active {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
-            font-weight: 600;
-        }
-
-        [data-theme="cyberpunk"] .article-item {
-            border-left: 2px solid transparent;
-        }
-
-        [data-theme="cyberpunk"] .article-item:hover,
-        [data-theme="cyberpunk"] .article-item.active {
-            border-left-color: var(--accent-primary);
-            background: var(--hover-bg);
-        }
-
-        .article-title {
-            font-size: 14px;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .article-meta {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        /* ========== 内容区 ========== */
-        .content {
-            flex: 1;
-            padding: 32px;
-            overflow-y: auto;
-        }
-
-        .login-card {
-            max-width: 400px;
-            margin: 60px auto;
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
             background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        [data-theme="cyberpunk"] .login-card {
-            border: 1px solid var(--accent-primary);
-            box-shadow: var(--accent-glow-strong);
-        }
-
-        .login-title {
-            font-size: 24px;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 24px;
             color: var(--text-primary);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px 24px;
-            border: none;
-            border-radius: 8px;
-            background: var(--accent-gradient);
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            border-radius: 6px;
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--accent-glow);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .error-msg {
-            color: #ef4444;
-            font-size: 14px;
-            margin-top: 12px;
-            text-align: center;
-        }
-
-        .article-view {
-            max-width: 800px;
-        }
-
-        .article-header {
-            margin-bottom: 32px;
-        }
-
-        .article-title-main {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            line-height: 1.2;
-        }
-
-        .article-meta {
-            display: flex;
-            gap: 16px;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .article-content {
-            font-size: 16px;
-            line-height: 1.8;
-            color: var(--text-secondary);
-        }
-
-        .article-content h1, .article-content h2, .article-content h3 {
-            margin: 32px 0 16px;
-            color: var(--text-primary);
-        }
-
-        .article-content p {
-            margin-bottom: 16px;
-        }
-
-        .article-content code {
-            background: var(--code-bg);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 14px;
-        }
-
-        .article-content pre {
-            background: var(--code-bg);
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 16px 0;
-        }
-
-        .article-content pre code {
-            background: none;
-            padding: 0;
-        }
-
-        .article-content blockquote {
-            border-left: 4px solid var(--accent-primary);
-            padding-left: 20px;
-            margin: 16px 0;
-            color: var(--text-muted);
-        }
-
-        .article-content img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .article-content a {
-            color: var(--accent-primary);
-            text-decoration: none;
-        }
-
-        .article-content a:hover {
-            text-decoration: underline;
-        }
-
-        .article-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
-        }
-
-        .article-content th, .article-content td {
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            text-align: left;
-        }
-
-        .article-content th {
-            background: var(--code-bg);
-            font-weight: 600;
-        }
-
-        .article-content ul, .article-content ol {
-            padding-left: 24px;
-            margin: 16px 0;
-        }
-
-        .article-content li {
-            margin: 8px 0;
-        }
-
-        /* ========== 右下角管理面板 ========== */
-        .admin-panel {
+        .page-btn:hover, .page-btn.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* 管理面板 FAB */
+        .fab {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 1000;
-        }
-
-        .admin-toggle {
+            bottom: 2rem;
+            right: 2rem;
             width: 56px;
             height: 56px;
             border-radius: 50%;
-            background: var(--accent-gradient);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--accent-glow-strong);
-            transition: all 0.3s;
+            background: var(--accent-primary);
             color: white;
-            font-size: 24px;
-        }
-
-        .admin-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        .admin-toggle.active {
-            transform: rotate(45deg);
-        }
-
-        [data-theme="cyberpunk"] .admin-toggle {
-            box-shadow: var(--accent-glow-strong);
-            border: 1px solid var(--accent-primary);
-        }
-
-        .admin-menu {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 16px;
-            min-width: 280px;
-            box-shadow: var(--shadow-lg);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.3s;
-        }
-
-        .admin-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        [data-theme="cyberpunk"] .admin-menu {
-            border: 1px solid var(--accent-primary);
-            box-shadow: var(--accent-glow-strong);
-        }
-
-        .menu-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-
-        .menu-item:hover {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
-        }
-
-        .menu-item-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: var(--code-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        .menu-item-content {
-            flex: 1;
-        }
-
-        .menu-item-title {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .menu-item-desc {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        /* ========== 主题选择器 ========== */
-        .theme-selector {
-            display: flex;
-            gap: 8px;
-            padding: 12px;
-            background: var(--code-bg);
-            border-radius: 8px;
-            margin-top: 8px;
-        }
-
-        .theme-btn {
-            flex: 1;
-            padding: 8px;
-            border: 2px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-secondary);
-            cursor: pointer;
-            font-size: 12px;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-        }
-
-        .theme-btn:hover, .theme-btn.active {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-        }
-
-        [data-theme="cyberpunk"] .theme-btn.active {
-            border-color: var(--accent-primary);
-            box-shadow: var(--accent-glow);
-        }
-
-        /* ========== 登录弹窗 ========== */
-        .login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-        }
-
-        .login-modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        [data-theme="cyberpunk"] .login-modal {
-            background: rgba(0, 0, 0, 0.8);
-        }
-
-        .login-modal-content {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 32px;
-            width: 90%;
-            max-width: 400px;
-            transform: scale(0.9);
-            transition: all 0.3s;
-        }
-
-        .login-modal.show .login-modal-content {
-            transform: scale(1);
-        }
-
-        [data-theme="cyberpunk"] .login-modal-content {
-            border: 1px solid var(--accent-primary);
-            box-shadow: var(--accent-glow-strong);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .modal-close {
-            width: 32px;
-            height: 32px;
             border: none;
-            background: var(--code-bg);
-            border-radius: 8px;
             cursor: pointer;
-            color: var(--text-muted);
-            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-size: 1.5rem;
+            z-index: 1000;
+        }
+        .fab-menu {
+            position: fixed;
+            bottom: 5rem;
+            right: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            padding: 0.5rem;
+            min-width: 200px;
+            display: none;
+            z-index: 1000;
+            border: 1px solid var(--border-color);
+        }
+        .fab-menu.show { display: block; }
+        .fab-item {
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.75rem;
         }
-
-        .modal-close:hover {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
-        }
-
-        /* ========== 页脚 ========== */
+        .fab-item:hover { background: var(--bg-primary); }
+        
+        /* 页脚 */
         .footer {
             background: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
-            padding: 24px 32px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 14px;
-            transition: all 0.3s;
+            padding: 1.5rem 2rem;
+            margin-top: 3rem;
         }
-
-        .footer-links {
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent-primary);
-        }
-
-        .footer-info {
-            display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-links a { color: var(--text-secondary); text-decoration: none; margin: 0 0.5rem; }
+        .footer-links a:hover { color: var(--accent-primary); }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+        .loading { text-align: center; padding: 2rem; color: var(--text-secondary); }
+        
+        /* 分类/标签筛选 */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
         }
-
-        .footer-divider {
-            color: var(--text-muted);
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 0.875rem;
         }
-
-        .footer-info a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-info a:hover {
-            color: var(--accent-primary);
-        }
-
-        .footer-links a:hover {
-            color: var(--accent-primary);
-        }
-
-        /* ========== 响应式 ========== */
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-
-            .content {
-                padding: 16px;
-            }
-
-            .article-title-main {
-                font-size: 24px;
-            }
-
-            .admin-panel {
-                bottom: 16px;
-                right: 16px;
-            }
-
-            .admin-menu {
-                right: -8px;
-                min-width: 260px;
-            }
-        }
-
-        /* ========== 加载动画 ========== */
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: var(--text-muted);
-        }
-
-        .loading::after {
-            content: '...';
-            animation: dots 1.5s infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
-
-        /* ========== 滚动条 ========== */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-primary);
-        }
+        .filter-btn:hover, .filter-btn.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
     </style>
 </head>
 <body>
     <!-- 页头 -->
     <header class="header">
-        <nav class="navbar">
-            <a href="/" class="navbar-brand">📚 Erudit</a>
-            <div class="menu-toggle" onclick="toggleMenu()">
-                <span></span><span></span><span></span>
-            </div>
-            <div class="navbar-menu" id="navMenu">
-                <button class="navbar-btn" onclick="showSearch()">🔍 搜索</button>
-                <button class="navbar-btn" onclick="showRSS()">📡 RSS</button>
-                <div class="navbar-btn" onclick="toggleTheme()" title="切换主题">
-                    <span id="themeLabel">CYBER</span>
-                    <span class="theme-icon">☀️</span>
-                    <button class="theme-toggle"></button>
-                    <span class="theme-icon">🌙</span>
+        <div class="navbar-brand">📚 Erudit</div>
+        <div class="header-right">
+            <!-- 主题切换 -->
+            <div class="theme-switcher" style="position:relative;">
+                <button class="theme-btn" onclick="toggleThemeDropdown()">🎨</button>
+                <div class="theme-dropdown" id="theme-dropdown">
+                    <div class="theme-option" onclick="setTheme('light')">☀️ 浅色</div>
+                    <div class="theme-option" onclick="setTheme('dark')">🌙 深色</div>
+                    <div class="theme-option" onclick="setTheme('cyberpunk')">💜 赛博</div>
                 </div>
-                <button class="navbar-btn primary" onclick="location.href='/admin'">⚙️ 管理后台</button>
             </div>
-        </nav>
+
+        </div>
     </header>
 
     <!-- 主体 -->
     <div class="main">
-        <!-- 侧边栏 -->
-        <aside class="sidebar">
-                <div class="stat-item">
-                    <span class="stat-label">标签数</span>
-                    <span class="stat-number" id="stat-tags">0</span>
-                </div>
-            </div>
-
-            <!-- 文章列表 -->
-            <div class="section-title">文章列表</div>
-            <div class="article-list" id="article-list">
-                <div class="loading">加载中</div>
-            </div>
-        </aside>
-
-        <!-- 内容区 -->
-        <main class="content" id="content">
-            <div class="loading">加载中</div>
-        </main>
+        <!-- 筛选栏 -->
+        <div class="filter-bar" id="filter-bar">
+            <button class="filter-btn active" onclick="filterBy('all')">全部</button>
+        </div>
+        
+        <!-- 文章列表 -->
+        <div class="article-list" id="article-list">
+            <div class="loading">加载中...</div>
+        </div>
+        
+        <!-- 分页 -->
+        <div class="pagination" id="pagination"></div>
     </div>
 
     <!-- 页脚 -->
     <footer class="footer">
-        <div class="footer-links">
-            <a href="/">首页</a>
-            <a href="/docs">API 文档</a>
-            <a href="https://github.com/trencps/erudit" target="_blank">GitHub</a>
-        </div>
-        <div class="footer-info">
-            <span>© 2026 Erudit v3.0.0 - 个人知识管理系统</span>
-            <span class="footer-divider">|</span>
-            <span>友情链接:</span>
-            <a href="https://hermes-studio.ai" target="_blank">Hermes Studio</a>
-            <a href="https://github.com/EKKOLearnAI" target="_blank">EKKOLearnAI</a>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="/">首页</a>
+                <a href="/links">友情链接</a>
+                <a href="/rss" target="_blank">RSS</a>
+            </div>
+            <div>© 2026 Erudit - 个人知识管理系统</div>
         </div>
     </footer>
 
-    <!-- 右下角管理面板 -->
-    <div class="admin-panel">
-        <div class="admin-menu" id="admin-menu">
-            <div class="menu-title">管理面板</div>
-            
-            <!-- 主题切换 -->
-            <div class="menu-item" onclick="toggleThemeMenu()">
-                <div class="menu-item-icon">🎨</div>
-                <div class="menu-item-content">
-                    <div class="menu-item-title">主题切换</div>
-                    <div class="menu-item-desc">切换界面主题</div>
-                </div>
-            </div>
-            <div class="theme-selector" id="theme-selector" style="display: none;">
-                <button class="theme-btn active" data-theme="light" onclick="setTheme('light')">☀️ 浅色</button>
-                <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">🌙 深色</button>
-                <button class="theme-btn" data-theme="cyberpunk" onclick="setTheme('cyberpunk')">💜 赛博</button>
-            </div>
-
-            <!-- 后台登录 -->
-            <div class="menu-item" onclick="showLoginModal()">
-                <div class="menu-item-icon">🔐</div>
-                <div class="menu-item-content">
-                    <div class="menu-item-title">后台登录</div>
-                    <div class="menu-item-desc">管理员登录</div>
-                </div>
-            </div>
-
-            <!-- API 文档 -->
-            <div class="menu-item" onclick="window.open('/docs', '_blank')">
-                <div class="menu-item-icon">📖</div>
-                <div class="menu-item-content">
-                    <div class="menu-item-title">API 文档</div>
-                    <div class="menu-item-desc">接口文档</div>
-                </div>
-            </div>
-
-            <!-- RSS 订阅 -->
-            <div class="menu-item" onclick="showRSS()">
-                <div class="menu-item-icon">📡</div>
-                <div class="menu-item-content">
-                    <div class="menu-item-title">RSS 订阅</div>
-                    <div class="menu-item-desc">订阅最新文章</div>
-                </div>
-            </div>
-
-            <!-- GitHub -->
-            <div class="menu-item" onclick="window.open('https://github.com/trencps/erudit', '_blank')">
-                <div class="menu-item-icon">⭐</div>
-                <div class="menu-item-content">
-                    <div class="menu-item-title">GitHub</div>
-                    <div class="menu-item-desc">查看源码</div>
-                </div>
-            </div>
-        </div>
-        <button class="admin-toggle" id="admin-toggle" onclick="toggleAdminMenu()">⚙️</button>
+    <!-- 管理面板 FAB -->
+    <button class="fab" id="fab-btn" onclick="toggleFabMenu()">⚙️</button>
+    <div class="fab-menu" id="fab-menu">
+        <div class="fab-item" onclick="showStats()">📊 统计信息</div>
+        <div class="fab-item" onclick="showLinks()">🔗 友情链接</div>
+        <div id="fab-login-item" class="fab-item" onclick="showLoginModal()">🔑 登录</div>
+        <div id="fab-rss-item" class="fab-item" onclick="showRSS()">📡 RSS订阅</div>
+        <div id="fab-admin-item" class="fab-item" style="display:none;" onclick="window.location.href='/admin'">📋 后台管理</div>
     </div>
 
     <!-- 登录弹窗 -->
-    <div class="login-modal" id="login-modal">
-        <div class="login-modal-content">
-            <div class="modal-header">
-                <div class="modal-title">后台登录</div>
-                <button class="modal-close" onclick="closeLoginModal()">×</button>
+    <div class="modal-overlay" id="login-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:2000;">
+        <div style="background:var(--bg-secondary);padding:2rem;border-radius:12px;min-width:300px;">
+            <h3>🔐 后台登录</h3>
+            <input type="password" id="login-password" placeholder="请输入密码" style="width:100%;padding:0.75rem;border:1px solid var(--border-color);border-radius:6px;margin:1rem 0;background:var(--bg-primary);color:var(--text-primary);">
+            <div id="login-error" style="color:#ef4444;font-size:0.875rem;"></div>
+            <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+                <button class="filter-btn" style="flex:1;background:var(--accent-primary);color:white;border:none;" onclick="doLogin()">登录</button>
+                <button class="filter-btn" style="flex:1;" onclick="closeLoginModal()">取消</button>
             </div>
-            <div class="form-group">
-                <label class="form-label">密码</label>
-                <input type="password" class="form-input" id="login-password" placeholder="请输入管理密码">
-            </div>
-            <button class="btn" onclick="doLogin()">登录</button>
-            <div class="error-msg" id="login-error"></div>
         </div>
     </div>
 
     <script>
-        let currentArticle = null;
-        let token = null;
-
-        function toggleMenu() {
-            document.getElementById('navMenu').classList.toggle('active');
-        }
-
-        // 主题切换
-        function toggleTheme() {
-            const html = document.documentElement;
-            const current = html.getAttribute('data-theme');
-            const themes = ["light", "dark", "cyberpunk", "neontokyo"];
-            const idx = themes.indexOf(current);
-            const next = themes[(idx + 1) % themes.length];
-            html.setAttribute('data-theme', next);
-            localStorage.setItem('erudit_theme', next);
-            const label = document.getElementById('themeLabel');
-            if (label) label.textContent = next.toUpperCase();
-        }
-
-        // 初始化主题
-        (function initTheme() {
-            const saved = localStorage.getItem('erudit_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', saved);
-        })();
-
-        async function login() {
-            const password = document.getElementById('password').value;
-            if (!password) { alert('请输入密码'); return; }
-            const resp = await fetch('/api/auth/login?password=' + encodeURIComponent(password));
-            const data = await resp.json();
-            if (data.token) {
-                token = data.token;
-                localStorage.setItem('erudit_token', token);
-                showMain();
-            } else { alert(data.detail || '密码错误'); }
-        }
-
-        function showMain() {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('mainSection').classList.remove('hidden');
+        // 全局变量
+        let token = localStorage.getItem('erudit-token') || null;
+        let currentPage = 1;
+        let currentFilter = 'all';
+        let pageSize = 10;
+        
+        // 初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('[1] DOM loaded');
+            checkLoginStatus();
+            loadSettings();
+            loadCategories();
             loadArticles();
             loadTheme();
-            
-            // 点击外部关闭菜单
-            document.addEventListener('click', (e) => {
-                const panel = document.querySelector('.admin-panel');
-                if (!panel.contains(e.target)) {
-                    document.getElementById('admin-menu').classList.remove('show');
-                    document.getElementById('admin-toggle').classList.remove('active');
-                }
-            });
         });
-
-        // 加载统计
-        async function loadStats() {
-            try {
-                const res = await fetch('/stats');
-                const data = await res.json();
-                console.log('Stats response:', data);
-                document.getElementById('stat-articles').textContent = data.articles || 0;
-                document.getElementById('stat-categories').textContent = data.categories || 0;
-                document.getElementById('stat-tags').textContent = data.tags || 0;
-            } catch (e) {
-                console.error('加载统计失败:', e);
+        
+        // 加载设置
+        function loadSettings() {
+            fetch('/api/settings')
+                .then(r => r.json())
+                .then(data => {
+                    pageSize = data.settings.page_size || 10;
+                })
+                .catch(e => console.error('Load settings error:', e));
+        }
+        
+        // 加载分类
+        function loadCategories() {
+            fetch('/categories')
+                .then(r => r.json())
+                .then(data => {
+                    const bar = document.getElementById('filter-bar');
+                    data.forEach(cat => {
+                        const btn = document.createElement('button');
+                        btn.className = 'filter-btn';
+                        btn.textContent = cat.name;
+                        btn.onclick = () => { window.location.href = '/category/' + cat.id; };
+                        bar.appendChild(btn);
+                    });
+                })
+                .catch(e => console.error('Load categories error:', e));
+        }
+        
+        // 加载文章
+        function loadArticles(page) {
+            page = page || 1;
+            currentPage = page;
+            console.log("[2] Loading articles, page:", page, "filter:", currentFilter);
+            // 检查 URL 中的分类参数
+            const path = window.location.pathname;
+            const categoryMatch = path.match(/^\/category\/(\d+)$/);
+            if (categoryMatch) {
+                currentFilter = { type: "category", id: parseInt(categoryMatch[1]) };
+                console.log("[2] URL 中有分类参数:", currentFilter.id);
             }
-        }
-
-        // 加载文章列表
-        async function loadArticles(categoryId = 'all') {
-            try {
-                const res = await fetch('/articles');
-                const data = await res.json();
-                console.log('Articles response:', data);
-                const list = document.getElementById('article-list');
-                
-                let articles = data.articles || [];
-                if (categoryId !== 'all') {
-                    articles = articles.filter(a => a.category_id === parseInt(categoryId));
+            
+            let url = '/articles?page=' + page + '&page_size=' + pageSize;
+            if (currentFilter !== 'all') {
+                if (currentFilter.type === 'category') {
+                    url += '&category_id=' + currentFilter.id;
+                } else if (currentFilter.type === 'tag') {
+                    url += '&tag=' + currentFilter.name;
                 }
-                
-                if (articles.length > 0) {
-                    list.innerHTML = articles.map(a => `
-                        <div class="article-item" onclick="showArticle('${a.slug}')">
-                            <div class="article-title">${a.title}</div>
-                            <div class="article-meta">${a.created_at || '未知时间'}</div>
-                        </div>
-                    `).join('');
-                } else {
-                    list.innerHTML = '<div class="loading">暂无文章</div>';
-                }
-            } catch (e) {
-                console.error('Load articles error:', e);
-                document.getElementById('article-list').innerHTML = '<div class="loading">加载失败</div>';
             }
-        }
-
-        // 分类筛选
-        function filterCategory(categoryId) {
-            // 更新按钮状态
-            document.querySelectorAll('#category-nav .nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (categoryId === 'all' && btn.textContent === '全部') {
-                    btn.classList.add('active');
-                } else if (btn.dataset.categoryId === categoryId) {
-                    btn.classList.add('active');
-                }
-            });
-            loadArticles(categoryId);
-        }
-
-        // 显示文章
-        async function showArticle(slug) {
-            try {
-                const res = await fetch(`/articles/${slug}`);
-                const data = await res.json();
-                console.log('Article data:', data);
-                currentArticle = data;
-                
-                // 高亮当前文章
-                document.querySelectorAll('.article-item').forEach(el => {
-                    el.classList.remove('active');
-                    if (el.onclick && el.onclick.toString().includes(slug)) {
-                        el.classList.add('active');
-                    }
+            
+            fetch(url)
+                .then(r => r.json())
+                .then(data => {
+                    console.log('[2] Articles loaded:', data.articles.length);
+                    renderArticles(data.articles);
+                    renderPagination(data);
+                })
+                .catch(e => {
+                    console.error('[2] Error:', e);
+                    document.getElementById('article-list').innerHTML = '<div class="empty-state">加载失败</div>';
                 });
-                
-                // 渲染内容
-                const content = data.content || '';
-                document.getElementById('content').innerHTML = `
-                    <div class="article-view">
-                        <div class="article-header">
-                            <h1 class="article-title-main">${data.title}</h1>
+        }
+        
+        // 渲染文章列表
+        function renderArticles(articles) {
+            const list = document.getElementById('article-list');
+            if (articles.length === 0) {
+                list.innerHTML = '<div class="empty-state">暂无文章</div>';
+                return;
+            }
+            list.innerHTML = articles.map(a => {
+                const date = (a.created_at || '').split('T')[0];
+                return `
+                    <div class="article-card" onclick="showArticle('${a.slug}')">
+
+                        <div class="article-info">
+                            <div class="article-title">${a.title}</div>
                             <div class="article-meta">
-                                <span>📅 ${data.created_at || '未知'}</span>
-                                ${data.category ? `<span>📁 ${data.category}</span>` : ''}
-                                ${data.tags ? `<span>🏷️ ${typeof data.tags === 'string' ? data.tags : data.tags.join(', ')}</span>` : ''}
+                                <span>📁 ${a.category || '未分类'}</span>
+                                <span>📅 ${date}</span>
+                                <span>👁️ ${a.views || 0}</span>
                             </div>
+                            <div class="article-summary">${(a.content || '').replace(/[#*`>\-\s]/g, '').substring(0, 150)}...</div>
                         </div>
-                        <div class="article-content">${markdownToHtml(content)}</div>
                     </div>
                 `;
-            } catch (e) {
-                console.error('Show article error:', e);
-                document.getElementById('content').innerHTML = '<div class="loading">加载失败</div>';
+            }).join('');
+        }
+        
+        // 渲染分页
+        function renderPagination(data) {
+            const pag = document.getElementById('pagination');
+            if (data.total_pages <= 1) { pag.innerHTML = ''; return; }
+            let html = '';
+            html += `<button class="page-btn" onclick="loadArticles(${data.page - 1})" ${data.page <= 1 ? 'disabled' : ''}>上一页</button>`;
+            for (let i = 1; i <= data.total_pages; i++) {
+                if (i === 1 || i === data.total_pages || (i >= data.page - 2 && i <= data.page + 2)) {
+                    html += `<button class="page-btn ${i === data.page ? 'active' : ''}" onclick="loadArticles(${i})">${i}</button>`;
+                } else if (i === data.page - 3 || i === data.page + 3) {
+                    html += '<span>...</span>';
+                }
+            }
+            html += `<button class="page-btn" onclick="loadArticles(${data.page + 1})" ${!data.has_next ? 'disabled' : ''}>下一页</button>`;
+            pag.innerHTML = html;
+        }
+        
+        // 随机缩略图
+        function getRandomThumb(slug) {
+            const colors = ['667eea', '764ba2', 'f093fb', '4facfe', '00f2fe', '43e97b', 'fa709a', 'fee140'];
+            const color = colors[hashCode(slug) % colors.length];
+            return 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect fill="#' + color + '" width="120" height="120"/><text x="60" y="60" text-anchor="middle" dy=".3em" fill="white" font-size="20">' + slug.charAt(0).toUpperCase() + '</text></svg>';
+        }
+        
+        function hashCode(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash |= 0;
+            }
+            return Math.abs(hash);
+        }
+        
+        function getRandomColor() {
+            const colors = ['667eea', '764ba2', 'f093fb', '4facfe', '00f2fe', '43e97b', 'fa709a', 'fee140'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // 筛选
+        function filterBy(type, value) {
+            currentFilter = { type: type, value: value };
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadArticles(1);
+        }
+        
+        // 显示文章
+        function showArticle(slug) {
+            window.location.href = '/article/' + slug;
+        }
+        
+        // 登录状态
+        function checkLoginStatus() {
+            const loginItem = document.getElementById('fab-login-item');
+            const adminItem = document.getElementById('fab-admin-item');
+            
+            if (token) {
+                loginItem.style.display = 'none';
+                adminItem.style.display = 'flex';
+            } else {
+                loginItem.style.display = 'flex';
+                adminItem.style.display = 'none';
             }
         }
-
-        // 简单的 Markdown 转 HTML
-        function markdownToHtml(md) {
-            if (!md) return '';
-            return md
-                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-                .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-                .replace(/\*(.*)\*/gim, '<em>$1</em>')
-                .replace(/```([\s\S]*?)```/gim, '<pre><code>$1</code></pre>')
-                .replace(/`([^`]+)`/gim, '<code>$1</code>')
-                .replace(/\n/gim, '<br />');
-        }
-
-        // 搜索
-        function showSearch() {
-            const keyword = prompt('请输入搜索关键词:');
-            if (keyword) {
-                window.location.href = `/search?keyword=${encodeURIComponent(keyword)}`;
-            }
-        }
-
-        // RSS
-        function showRSS() {
-            window.open('/rss', '_blank');
-        }
-
-        // 管理面板切换
-        function toggleAdminMenu() {
-            const menu = document.getElementById('admin-menu');
-            const toggle = document.getElementById('admin-toggle');
-            menu.classList.toggle('show');
-            toggle.classList.toggle('active');
-        }
-
-        // 主题菜单切换
-        function toggleThemeMenu() {
-            const selector = document.getElementById('theme-selector');
-            selector.style.display = selector.style.display === 'none' ? 'flex' : 'none';
-        }
-
-        // 设置主题
+        
+        // 主题切换
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('erudit-theme', theme);
-            
-            // 更新按钮状态
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.theme === theme);
-            });
+            document.getElementById('theme-dropdown').classList.remove('show');
         }
-
-        // 加载主题
+        
         function loadTheme() {
             const saved = localStorage.getItem('erudit-theme') || 'light';
             setTheme(saved);
         }
-
-        // 登录弹窗
-        function showLoginModal() {
-            document.getElementById('login-modal').classList.add('show');
-            document.getElementById('login-password').focus();
+        
+        function toggleThemeDropdown() {
+            document.getElementById('theme-dropdown').classList.toggle('show');
         }
-
+        
+        // FAB 菜单
+        function toggleFabMenu() {
+            document.getElementById('fab-menu').classList.toggle('show');
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.fab') && !e.target.closest('.fab-menu')) {
+                document.getElementById('fab-menu').classList.remove('show');
+            }
+            if (!e.target.closest('.theme-switcher')) {
+                document.getElementById('theme-dropdown').classList.remove('show');
+            }
+        });
+        
+        // FAB 功能
+        function showStats() {
+            fetch('/stats')
+                .then(r => r.json())
+                .then(data => {
+                    alert('文章数: ' + data.articles + '\n浏览数: ' + data.views + '\n分类数: ' + data.categories + '\n标签数: ' + data.tags);
+                });
+            toggleFabMenu();
+        }
+        
+        function showLinks() {
+            window.location.href = '/links';
+            toggleFabMenu();
+        }
+        
+        function showRSS() {
+            window.open('/rss', '_blank');
+            toggleFabMenu();
+        }
+        
+        // 登录
+        function showLoginModal() {
+            document.getElementById('login-modal').style.display = 'flex';
+            document.getElementById('login-password').focus();
+            toggleFabMenu();
+        }
+        
         function closeLoginModal() {
-            document.getElementById('login-modal').classList.remove('show');
+            document.getElementById('login-modal').style.display = 'none';
             document.getElementById('login-password').value = '';
             document.getElementById('login-error').textContent = '';
         }
-
-        // 登录
+        
         async function doLogin() {
             const password = document.getElementById('login-password').value;
             if (!password) {
                 document.getElementById('login-error').textContent = '请输入密码';
                 return;
             }
-            
             try {
-                const res = await fetch(`/api/auth/login?password=${encodeURIComponent(password)}`);
+                const res = await fetch('/api/auth/login?password=' + encodeURIComponent(password));
                 const data = await res.json();
-                
                 if (data.token) {
                     token = data.token;
                     localStorage.setItem('erudit-token', token);
                     closeLoginModal();
-                    alert('登录成功！');
-                    window.location.href = '/admin';
+                    checkLoginStatus();
                 } else {
                     document.getElementById('login-error').textContent = '密码错误';
                 }
             } catch (e) {
-                document.getElementById('login-error').textContent = '登录失败，请重试';
+                document.getElementById('login-error').textContent = '登录失败';
             }
         }
-
-        // 回车登录
-        document.getElementById('login-password')?.addEventListener('keypress', (e) => {
+        
+        document.getElementById('login-password')?.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') doLogin();
         });
     </script>
